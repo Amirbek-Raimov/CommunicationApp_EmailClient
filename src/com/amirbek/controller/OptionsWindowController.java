@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
@@ -29,25 +28,22 @@ public class OptionsWindowController extends BaseController implements Initializ
     private ChoiceBox<ColorTheme> themePicker;
 
     @FXML
-    void applyButtonAction() {
+    void applyBtnAction() {
         viewFactory.setColorTheme(themePicker.getValue());
         viewFactory.setFontSize(FontSize.values()[(int)(fontSizePicker.getValue())]);
-        viewFactory.updateStyles();
-
+        viewFactory.updateAllStyles();
     }
 
     @FXML
     void cancelButtonAction() {
         Stage stage = (Stage) fontSizePicker.getScene().getWindow();
         viewFactory.closeStage(stage);
-
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL location, ResourceBundle resources) {
         setUpThemePicker();
         setUpSizePicker();
-
     }
 
     private void setUpSizePicker() {
@@ -63,22 +59,19 @@ public class OptionsWindowController extends BaseController implements Initializ
         fontSizePicker.setLabelFormatter(new StringConverter<Double>() {
             @Override
             public String toString(Double object) {
-                int i=object.intValue();
+                int i = object.intValue();
                 return FontSize.values()[i].toString();
             }
 
             @Override
-            public Double fromString(String s) {
+            public Double fromString(String string) {
                 return null;
             }
         });
-        fontSizePicker.valueProperty().addListener((obs, oldVal, newVal)->{
+        fontSizePicker.valueProperty().addListener((obs, oldVal, newVal) -> {
             fontSizePicker.setValue(newVal.intValue());
         });
-
-        }
-
-
+    }
 
     private void setUpThemePicker() {
         themePicker.setItems(FXCollections.observableArrayList(ColorTheme.values()));
